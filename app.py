@@ -3,12 +3,11 @@ from bus_functions import *
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
-import simplejson as json
-from flask_cors import CORS
+
 
 
 app = Flask(__name__, template_folder="templates")
-CORS(app)
+
 
 app.secret_key = 'mliu'  # Set a secret key for session
 
