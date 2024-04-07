@@ -3,17 +3,19 @@ from bus_functions import *
 import pandas as pd
 from datetime import datetime
 from datetime import timedelta
+from io import StringIO
 
+# from flask_cors import CORS
 
 
 app = Flask(__name__, template_folder="templates")
-
+# CORS(app)
 
 app.secret_key = 'mliu'  # Set a secret key for session
 
-stops_df = pd.read_csv("stops.csv")
-trips_df = pd.read_csv("e_trips.csv")
-stop_times_df = pd.read_csv("stop_times.csv")
+stops_df = pd.read_csv("data_files/stops.csv")
+trips_df = pd.read_csv("data_files/e_trips.csv")
+stop_times_df = pd.read_csv("data_files/stop_times.csv")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -87,8 +89,10 @@ def stops():
     # Retrieve the result from the session variable
     result = session.get('bus_stops', [])
     bus = session.get('bus', [])
+    
     df_json = session.get('my_dataframe')
-    df = pd.read_json(df_json) if df_json else pd.DataFrame()
+    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
+
     if request.method == "POST":
         # get the user selection for bus stop
         
@@ -147,7 +151,9 @@ def get_data():
 def bus_info():
     df_json = session.get('my_dataframe')
 
-    df = pd.read_json(df_json) if df_json else pd.DataFrame()
+    # df = pd.read_json(df_json) if df_json else pd.DataFrame()
+    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
+
     result=[]
     if request.method == "POST":
         user_input = ""
