@@ -213,7 +213,7 @@ def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
         location = [lat, lon], 
         popup=folium.Popup(all_busstops.iloc[0]['stop_name'], parse_html=True, max_width=300),
 
-        icon=folium.Icon(color='green' ,icon='home', prefix='fa')).add_to(map)
+        icon=folium.Icon(color='darkblue' ,icon='home', prefix='fa')).add_to(map)
     
     for index, row in all_busstops.iloc[1:].iterrows():
         poi_lat = row['stop_lat']
