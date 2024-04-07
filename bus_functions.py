@@ -141,23 +141,19 @@ def POI_getter(amenities, possible_locations):
     '''
     color scheme
 
-    food: green
-    community stuff: lightgray
-    leisure: pink
-
     folium icon list: https://fontawesome.com/v4/icons/
     '''
     amenities_of_interest = {
         # food
-        'cafe':['coffee','lightgray'],'bar':['beer','lightgray'],'restaurant':['cutlery','lightgray'],'pub':['beer','lightgray'],
+        'cafe':['coffee','green'],'bar':['beer','green'],'restaurant':['cutlery','green'],'pub':['beer','green'],
 
         
         # social buildings
-        'social_centre':['institution','pink'],'library':['book','pink'],'marketplace':['shopping-cart','pink'],
-        'events_venue':['institution','pink'],'exhibition_centre':['institution','pink'],'place_of_worship':['institution','pink'],
+        'social_centre':['institution','orange'],'library':['book','orange'],'marketplace':['shopping-cart','green'],
+        'events_venue':['institution','orange'],'exhibition_centre':['institution','lightgrey'],'place_of_worship':['institution','orange'],
 
         # places to chill
-        'park' :['tree','green'],'music_venue':['music', 'black'],'cinema':['film','pink'],'theatre':['film','pink']
+        'park' :['tree','green'],'music_venue':['music', 'red'],'cinema':['film','red'],'theatre':['film','red']
 
         # transportation
     }
@@ -180,7 +176,7 @@ def POI_getter(amenities, possible_locations):
 
         # change the distance!
         try:
-            G = ox.features_from_point(center_point, tags={**amenity_tags, **building_tags}, dist=150)
+            G = ox.features_from_point(center_point, tags={**amenity_tags, **building_tags}, dist=200)
             G['busstop'] = row['stop_name'] 
             poi_df = pd.concat([poi_df, G], ignore_index=True)
         except ox._errors.InsufficientResponseError as e:
