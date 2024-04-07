@@ -142,22 +142,22 @@ def POI_getter(amenities, possible_locations):
     color scheme
 
     food: green
-    community stuff: brown
-    leisure: blue
+    community stuff: lightgray
+    leisure: pink
 
     folium icon list: https://fontawesome.com/v4/icons/
     '''
     amenities_of_interest = {
         # food
-        'cafe':['coffee','brown'],'bar':['beer','brown'],'restaurant':['cutlery','brown'],'pub':['beer','brown'],
+        'cafe':['coffee','lightgray'],'bar':['beer','lightgray'],'restaurant':['cutlery','lightgray'],'pub':['beer','lightgray'],
 
         
         # social buildings
-        'social_centre':['institution','blue'],'library':['book','blue'],'marketplace':['shopping-cart','blue'],
-        'events_venue':['institution','blue'],'exhibition_centre':['institution','blue'],'place_of_worship':['institution','blue'],
+        'social_centre':['institution','pink'],'library':['book','pink'],'marketplace':['shopping-cart','pink'],
+        'events_venue':['institution','pink'],'exhibition_centre':['institution','pink'],'place_of_worship':['institution','pink'],
 
         # places to chill
-        'park' :['tree','green'],'music_venue':['music', 'black'],'cinema':['film','blue'],'theatre':['film','blue']
+        'park' :['tree','green'],'music_venue':['music', 'black'],'cinema':['film','pink'],'theatre':['film','pink']
 
         # transportation
     }
@@ -217,7 +217,7 @@ def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
         location = [lat, lon], 
         popup=folium.Popup(all_busstops.iloc[0]['stop_name'], parse_html=True, max_width=300),
 
-        icon=folium.Icon(color='darkgreen' ,icon='home', prefix='fa')).add_to(map)
+        icon=folium.Icon(color='green' ,icon='home', prefix='fa')).add_to(map)
     
     for index, row in all_busstops.iloc[1:].iterrows():
         poi_lat = row['stop_lat']
@@ -251,4 +251,4 @@ def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
 
 
     # Display the map
-    map.save('D:/Coding projects/Bus POI Finder/capmetro/templates/map.html')  # Save the map as an HTML file
+    map.save('templates/map.html')  # Save the map as an HTML file
