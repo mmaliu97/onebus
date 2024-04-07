@@ -82,7 +82,7 @@ def bus_n_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_lon
 
     bus_n_stops = bus_n_stops.sort_values(by='route_id')
     bus_n_stops['distance'] = (np.ceil(bus_n_stops['distance']*100 ) * 10).astype(int)
-    bus_n_stops = bus_n_stops.rename(columns={'distance': 'distance (m)'})
+    bus_n_stops = bus_n_stops.rename(columns={'distance': 'distance (m)', 'route_id': 'Bus Number', 'stop_name': 'Bus Stop'})
     return bus_n_stops
 
 def real_bus_origin(time, df, origin):
