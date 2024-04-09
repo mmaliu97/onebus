@@ -120,7 +120,7 @@ def real_bus_origin(time, df, origin):
                 time_diff = min_time
                 real_origin = row_origin
             else:
-                pass
+                real_origin = row_origin
 
     # get the trip ID and and which order is it in the list of bus stops
     selected_trip_id= real_origin['trip_id']
