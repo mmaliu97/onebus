@@ -237,7 +237,7 @@ def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
         time = transit_duration(origin_stop,poi_busstop,stop_times_df)
         # print(f'printing {poi_name}')
         
-        popup_text = folium.Html(f"Closest bus stop: {poi_busstop}.<br>Name of POI: {poi_name}.<br>Type of POI: {poi_amenity}.<br>Bus journey: {time}.", script = True)
+        popup_text = folium.Html(f"Closest bus stop: {poi_busstop}.<br>Name of POI: {poi_name}.<br>Type of POI: {poi_amenity}.<br>Bus journey: {time} minutes.", script = True)
 
         # Add a marker for each row to the map
         folium.Marker(
