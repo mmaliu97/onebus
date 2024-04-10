@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask Bus POI Finder App</title>
+    <title>One Bus</title>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/loading.css') }}">
     <style>
@@ -50,12 +50,23 @@
         }
 
         div#submission {
+        width: 260px;
+        height: 100px;
+        margin: 0 auto;
+        align-items: center;
+        justify-content: center;
+        display: none;
+        cursor: wait;
+        }    
+        /* div#submission {
         width: 250px;
         height: 250px;
-        display: none;
-        
+        margin: 0 auto;
+        align-items: center;
+        justify-content: center;
+        display: block;
         cursor: wait;
-        }
+        } */
 
     </style>
 </head>
@@ -72,8 +83,8 @@
         <label for="time">Enter Time:</label>
         <input type="time" id="time" name="time">
         <br>
-        <div id="submission"> 
-            <!-- <img src = "static/yuB.gif">  -->
+        <div id="submission">
+            <img src = "static/yuB.gif"> 
         </div>
         <div class="bus-container">
             <!-- Display the HTML table -->

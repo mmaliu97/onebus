@@ -14,7 +14,7 @@
     height: 35px;
     border: 1px solid black;
     /* display: none; */
-    background-image: url(../yuB.gif);
+    /* background-image: url(../yuB.gif); */
     background-color: black;
     cursor: wait;
     }

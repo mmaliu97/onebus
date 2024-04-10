@@ -6,7 +6,6 @@ async function getUserLocation() {
             const position = await getPosition();
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
-            console.log("hello what the fuckl")
             // Send an asynchronous request to Flask server
             const response = await fetch('/get_data', {
                 method: 'POST',
