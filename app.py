@@ -54,7 +54,7 @@ def stops_no_help():
     result = session.get('bus_stops', [])
     bus = session.get('bus', [])
     df_json = session.get('my_dataframe')
-    df = pd.read_json(df_json) if df_json else pd.DataFrame()
+    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
     if request.method == "POST":
         # get the user selection for bus stop
         
