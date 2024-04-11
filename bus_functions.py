@@ -207,7 +207,7 @@ def transit_duration(origin, destination, location_df):
 
 def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
     # delete html file
-    file_path = 'templates.html'
+    file_path = 'templates/map.html'
 
     if os.path.exists(file_path):
         os.remove(file_path)
