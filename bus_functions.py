@@ -9,7 +9,7 @@ from shapely.geometry import Point, Polygon
 import folium
 import numpy as np
 from math import radians, sin, cos, sqrt, atan2
-
+import os
 
 def bus_stops_finder(bus_number, trips_df, stops_df,stop_times_df ):
     '''
@@ -206,6 +206,16 @@ def transit_duration(origin, destination, location_df):
     return time_diff_mins
 
 def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
+    # delete html file
+    file_path = 'templates.html'
+
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        print("Map file deleted successfully")
+    else:
+        print("No map found")
+
+
     # Create a Folium map centered on a specific location
     map = folium.Map(location=[lat, lon], zoom_start=16)
     # print(all_busstops.iloc[:1])
