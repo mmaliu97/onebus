@@ -248,3 +248,4 @@ def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
 
     # Display the map
     map.save('templates/map.html')  # Save the map as an HTML file
+    print("map has been saved")
