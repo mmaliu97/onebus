@@ -176,7 +176,7 @@ def bus_info():
 
 @app.route("/poi")
 def poi():
-    return render_template("poi.html")
+    return render_template("map.html")
 
 @app.route("/updates")
 def updates():
