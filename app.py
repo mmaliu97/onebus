@@ -10,6 +10,7 @@ from io import StringIO
 
 app = Flask(__name__, template_folder="templates")
 # CORS(app)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 app.secret_key = 'mliu'  # Set a secret key for session
 
