@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, session, url_for, send_from_directory
+from flask import Flask, render_template, request, jsonify, redirect, session, url_for
 from bus_functions import *
 import pandas as pd
 from datetime import datetime
@@ -176,7 +176,7 @@ def bus_info():
 
 @app.route("/poi")
 def poi():
-    return send_from_directory('templates', 'poi.html', cache_timeout=0)
+    return render_template("poi.html")
 
 @app.route("/updates")
 def updates():
