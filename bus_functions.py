@@ -207,13 +207,12 @@ def transit_duration(origin, destination, location_df):
 
 def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
     # delete html file
-    file_path = 'templates/map.html'
-
-    if os.path.exists(file_path):
-        os.remove(file_path)
-        print("Map file deleted successfully")
-    else:
-        print("No map found")
+    map_html_path = 'templates/map.html'
+    
+    # Clear existing map HTML file if it exists
+    if os.path.exists(map_html_path):
+        with open(map_html_path, 'w') as file:
+            file.write('')
 
 
     # Create a Folium map centered on a specific location
