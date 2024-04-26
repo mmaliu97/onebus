@@ -4,22 +4,21 @@
 
     <title>One Bus</title>
     
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/poi.css') }}">
 
 </head>
 <body>
-
-    <h1>Points of Interest (POI) Information</h1>
-    <!-- Other content specific to the POI page -->
-
+    <h1 class="heading">Map of Places of Interest</h1>
+    <!-- <div class="container"> test</div> -->
+    <div class="map-container">
+        {% include 'map.html' %}
+    </div>
     
-    <body>
-        <!-- Use an iframe to display your map.html file -->
-        <iframe src="templates/map.html" width="100%" height="600" frameborder="0"></iframe>
-    </body>
-
     <!-- back button -->
-    <a href="/"><button>Back</button></a>
+
+    <div class="button-container">
+        <a href="/" class="button"><button>Back</button></a>
+    </div>
     <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
 </body>
 </html>

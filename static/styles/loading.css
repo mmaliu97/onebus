@@ -27,23 +27,24 @@ body {
 
 .form-container {
     background-color: rgba(255, 200, 255, 0.8);
-    padding: 20px;
+    padding: 17px;
     border-radius: 10px;
     text-align: center;
 }
 
 .my-button {
-    margin-top: 5px;
+    margin-top: 10px;
     cursor: pointer;
 }
 
-.my-button:hover {
+/* .my-button:hover {
     background-color: #45a049;
-}
+} */
 
 div#submission {
-width: 250px;
-height: 250px;
+width: 260px;
+height: 100px;
+margin: 0 auto;
 align-items: center;
 justify-content: center;
 display: none;

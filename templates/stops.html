@@ -4,71 +4,7 @@
     <title>One Bus</title>
 
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/loading.css') }}">
-    <style>
-                
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-image: url('/static/img/back1.jpg'); /* Adjust the path accordingly */
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .container {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .bus-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .form-container {
-            background-color: rgba(255, 200, 255, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-
-        .my-button {
-            margin-top: 5px;
-            cursor: pointer;
-        }
-
-        .my-button:hover {
-            background-color: #45a049;
-        }
-
-        div#submission {
-        width: 260px;
-        height: 100px;
-        margin: 0 auto;
-        align-items: center;
-        justify-content: center;
-        display: none;
-        cursor: wait;
-        }    
-        /* div#submission {
-        width: 250px;
-        height: 250px;
-        margin: 0 auto;
-        align-items: center;
-        justify-content: center;
-        display: block;
-        cursor: wait;
-        } */
-
-    </style>
+    
 </head>
 <body>
     <div class = "container">
@@ -80,8 +16,8 @@
                 <option value="{{ bus_stop }}">{{ bus_stop }}</option>
             {% endfor %}
         </select>
-        <label for="time">Enter Time:</label>
-        <input type="time" id="time" name="time">
+        <label for="time">Dep Time:</label>
+        <input type="time" id="time" name="time" value="12:00">
         <br>
         <div id="submission">
             <img src = "static/yuB.gif"> 
