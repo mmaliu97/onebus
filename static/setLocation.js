@@ -4,7 +4,7 @@ let isSpoofed = false
 document.addEventListener("DOMContentLoaded", function() {
     const spoofButton = document.getElementById("spoofButton");
     const austinCoords = { latitude: 30.2672, longitude: -97.7431 };
-    const tolerance = 0.1; // tolerance for comparing coordinates
+    const tolerance = 1; // tolerance for comparing coordinates
 
     // Function to check if coordinates are within tolerance range
     function isNotInAustin(position) {
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
         } else if (isNotInAustin(position) && isSpoofed) {
             console.log("user not in austin but is spoofed")
-            spoofButton.style.display = 'block'; // Show button if user is not in Austin and location is not spoofed
+            spoofButton.style.display = 'none'; // Show button if user is not in Austin and location is not spoofed
             localStorage.setItem('isAustin', 'false');
 
         }
