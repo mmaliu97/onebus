@@ -3,6 +3,8 @@ let isSpoofed = false
 
 document.addEventListener("DOMContentLoaded", function() {
     const spoofButton = document.getElementById("spoofButton");
+    const locationText = document.getElementById("locationText");
+
     const austinCoords = { latitude: 30.2672, longitude: -97.7431 };
     const tolerance = 1; // tolerance for comparing coordinates
 
@@ -13,7 +15,6 @@ document.addEventListener("DOMContentLoaded", function() {
         return Math.abs(latitude - austinCoords.latitude) > tolerance ||
                Math.abs(longitude - austinCoords.longitude) > tolerance;
     }
-
     // Check if the location has been spoofed before
     const isSpoofed = localStorage.getItem('isSpoofed') === 'true';
 
@@ -23,6 +24,8 @@ document.addEventListener("DOMContentLoaded", function() {
         if (isNotInAustin(position) && !isSpoofed) {
             console.log("user not in austin")
             spoofButton.style.display = 'block'; // Show button if user is not in Austin and location is not spoofed
+            locationText.innerHTML = 'Currently only available to Austinites, click the button below to temporarily move to <s>California</s> Austin';
+
             localStorage.setItem('isAustin', 'false');
             localStorage.setItem('isSpoof', 'true');
             
@@ -36,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function() {
         
         else {
             console.log("user in austin")
-
             spoofButton.style.display = 'none'; // Hide button if user is in Austin or location is spoofed
             isAustin = true; // Set isAustin to true if location is in Austin
             localStorage.setItem('isAustin', 'true');
