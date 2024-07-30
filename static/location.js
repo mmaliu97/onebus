@@ -1,7 +1,25 @@
 document.getElementById('getLocationBtn').addEventListener('click', getUserLocation);
 
 async function getUserLocation() {
-    if (navigator.geolocation) {
+    console.log(isAustin)
+    if (!isAustin) {
+        latitude = 30.36869800593312;
+        longitude = -97.72022131963884;
+
+        // Send an asynchronous request to Flask server without expecting a JSON response
+        await fetch('/get_data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ latitude, longitude }),
+        });
+
+        console.log('Location sent successfully');
+
+        window.location.href = '/bus_info'; 
+    }
+    else if (navigator.geolocation) {
         try {
             const position = await getPosition();
             const latitude = position.coords.latitude;

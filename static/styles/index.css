@@ -23,7 +23,7 @@ body {
     padding: 10px;
     font-size: 18px;
     border-radius: 10px;
-    text-align: center;
+    text-align: bottom;
     margin-top: 15px;
 }
 
@@ -34,10 +34,40 @@ body {
     cursor: pointer; /* Change cursor to pointer to indicate clickable */
 }
 
+#setLocationButton {
+    color: #1215da; /* Change the color to blue */
+    text-decoration: underline; /* Underline the text */
+    cursor: pointer; /* Change cursor to pointer to indicate clickable */
+}
+
+
 .my-button:hover {
     background-color: #45a049;
 }
 
 .h1{
     font-size: 18px;
+}
+
+.spoofButton-container {
+    padding: 20px;
+    border-radius: 10px;
+    display: inline-block;
+    text-align: center;
+}
+.spoofButton {
+    background-color: #007BFF;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 10px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.spoofButton:hover {
+    background-color: #0056b3;
+    color: white;
 }

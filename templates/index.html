@@ -7,22 +7,25 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/index.css') }}">
 
     <title>One Bus</title>
-
+    
 </head>
 <body>
     <div class="container">
         <h1>Welcome to 1-Bus!</h1>
         1-Bus is a tool to help you find a Place of Interest (POI) that only requires one bus
-        for you to get to! <br>
+        for you to get to! <br> Currently only available to Austinites, click the button below to temporarily 
+        move to <s>California</s> Austin<br>
 
-        <!-- <button class = "my-button" type="submit">Find a bus near me</button> -->
-    
-        <!-- <button class = "my-button" id="getLocationBtn">Find a Bus/ Bus Stop near me !</button> -->
-        <h3>Not sure what buses are near you? Click <span id="getLocationBtn">here</span> to find out!</h3>
-
-        <script src="{{ url_for('static', filename='location.js') }}" defer></script>
-
+        <div class="spoofButton-container">
+            <button id="spoofButton" style="display: none;">Teleport me to Austin!</button>
+            <script src="{{ url_for('static', filename='setLocation.js') }}" defer></script>
+        </div>
         
+
+        <!-- <script src="{{ url_for('static', filename='setLocation.js') }}" defer></script>
+        <h3>The website currently only works for Austinites, sorry! If you would still like to check it out 
+        click <span id="setLocationButton">here</span> to visit Austin</h3> -->
+
 
         <!-- For user to POST their bus number -->
         <form method="POST">
@@ -30,6 +33,16 @@
             <input type="number" id="user_input" name="user_input" required>
                 <button type="submit">Enter</button>
         </form>
+
+        <h3>Not sure what buses are near you? Click <span id="getLocationBtn">here</span> to find out!</h3>
+        <script src="{{ url_for('static', filename='location.js') }}" defer></script>
+
+        <!-- <h3 id="locationPrompt"></h3>
+        <script src="{{ url_for('static', filename='checkLocation.js') }}" defer></script>  -->
+
+
+
+        
 
         <!-- Form for getting Updates -->
         <div class="form-container">
@@ -40,6 +53,8 @@
             </form> -->
         </div>
 
+
+        
     </div>
 </body>
 </html>
