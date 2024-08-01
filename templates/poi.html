@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <title>One Bus</title>
-    
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/poi.css') }}">
-
 </head>
 <body>
-    <h1 class="heading">Map of Places of Interest</h1>
-    <!-- <div class="container"> test</div> -->
-    <div class="map-container">
-        {% include 'map.html' %}
+    <div class="content">
+        <h1 class="heading">Map of Places of Interest</h1>
+        <h2>Drag the map to explore places you can visit! <br> Click the icon to learn what they are and their closest bus stop</h2>
+        <div class="map-container">
+            {% include 'map.html' %}
+        </div>
     </div>
-    
-    <!-- back button -->
-
     <div class="button-container">
         <a href="/" class="button"><button>Back</button></a>
     </div>
-    <!-- <script src="{{ url_for('static', filename='script.js') }}"></script> -->
 </body>
 </html>
