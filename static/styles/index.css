@@ -51,23 +51,36 @@ body {
 
 .spoofButton-container {
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 10px 10px 0 0;
+    flex-direction: column;
+    justify-content: center;
     display: inline-block;
     text-align: center;
 }
 .spoofButton {
-    background-color: #007BFF;
-    color: black;
-    padding: 10px 20px;
-    font-size: 16px;
-    margin: 10px;
-    border: none;
-    border-radius: 5px;
-    text-align: center;
-    cursor: pointer;
+    background-color: #007BFF; /* Blue background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding */
+    font-size: 16px; /* Font size */
+    margin: 10px; /* Margin */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    text-align: center; /* Centered text */
+    cursor: pointer; /* Pointer/hand icon */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow */
+    transition: background-color 0.3s ease; /* Transition for hover effect */
 }
 
 .spoofButton:hover {
     background-color: #0056b3;
     color: white;
+}
+
+.button-container {
+    padding: 2px;
+    border-radius: 2px;
+    flex-direction: column;
+    justify-content: center;
+    display: inline-block;
+    text-align: center;
 }
