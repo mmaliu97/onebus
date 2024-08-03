@@ -1,5 +1,5 @@
 let isAustin = false;
-let isSpoofed = false
+let isSpoofed = false;
 
 document.addEventListener("DOMContentLoaded", function() {
     const spoofButton = document.getElementById("spoofButton");
@@ -11,13 +11,14 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to check if coordinates are within tolerance range
     function isNotInAustin(position) {
         const { latitude, longitude } = position.coords;
-        console.log(position.coords)
-        console.log(Math.abs(latitude - austinCoords.latitude) > tolerance)
+        console.log(position.coords);
+        console.log(Math.abs(latitude - austinCoords.latitude) > tolerance);
         return Math.abs(latitude - austinCoords.latitude) > tolerance ||
                Math.abs(longitude - austinCoords.longitude) > tolerance;
     }
+
     // Check if the location has been spoofed before
-    const isSpoofed = localStorage.getItem('isSpoofed') === 'true';
+    const isSpoofed = sessionStorage.getItem('isSpoofed') === 'true';
 
     // Get user's current location
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -25,18 +26,19 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log("user not in austin");
             spoofButton.style.display = 'block'; // Show button if user is not in Austin and location is not spoofed
             locationText.style.display = 'block'; // Show text if user is not in Austin and location is not spoofed
-            localStorage.setItem('isAustin', 'false');
+            sessionStorage.setItem('isAustin', 'false');
         } else if (isNotInAustin(position) && isSpoofed) {
             console.log("user not in austin but is spoofed");
             spoofButton.style.display = 'none'; // Hide button if user is not in Austin and location is spoofed
             locationText.style.display = 'none'; // Hide text if user is not in Austin and location is spoofed
-            localStorage.setItem('isAustin', 'false');
+            sessionStorage.setItem('isAustin', 'false');
         } else {
             console.log("user in austin");
+            console.log(isSpoofed);
             spoofButton.style.display = 'none'; // Hide button if user is in Austin or location is spoofed
             locationText.style.display = 'none'; // Hide text if user is in Austin or location is spoofed
             isAustin = true; // Set isAustin to true if location is in Austin
-            localStorage.setItem('isAustin', 'true');
+            sessionStorage.setItem('isAustin', 'true');
         }
     }, function(error) {
         console.error("Error getting location: ", error);
@@ -56,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function() {
             success(spoofedPosition);
         };
 
-        // Set the spoofed state in local storage
-        localStorage.setItem('isSpoofed', 'true');
+        // Set the spoofed state in session storage
+        sessionStorage.setItem('isSpoofed', 'true');
 
         alert("Your location has been spoofed to Austin, TX.");
         isAustin = false; // Set isAustin to false because the location is spoofed
