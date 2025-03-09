@@ -49,6 +49,22 @@ def bus_stops_finder(bus_number, trips_df, stops_df,stop_times_df ):
 
 
 def bus_n_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_longitude):
+    '''
+    Find the closest 3 bus stops and their corresponding bus numbers (note a bus stop can have more than 1 bus going through it!)
+
+    Arguments: 
+    stop_times_df: dataframe of stops_times.txt from GTFS data
+    trips_df: dataframe of trips.txt from GTFS data
+    stops_df: dataframe of stops.txt from GTFS data
+    user_latitude: get this by prompting for user's location from the front end
+    user_longitude: get this by prompting for user's location from the front end
+
+    Returns:
+    dataframe of the
+        - bus stops
+        - their corresponding number bus number
+        - and the distance between their location and the bus stop
+    '''
 
     # Merge relevant data
     merged_df = pd.merge(stop_times_df, trips_df, on='trip_id')
@@ -97,6 +113,7 @@ def real_bus_origin(time, df, origin):
     
     output: time appropriate bus stop
     '''
+    
     time = str(time)
     str_time = time + ':00'
 
@@ -139,9 +156,17 @@ def get_centroid(geom):
 def POI_getter(amenities, possible_locations):
 
     '''
-    color scheme
+    Gets specific list of POIs that are within walking distance of the bus stops and produces a map.html image that user can interact with
 
-    folium icon list: https://fontawesome.com/v4/icons/
+    Arguments:
+        - amentities: list of amenities that I think might be interesting to go to/visit
+        - possible_locations: dataframe of bus_stops that user is able to go to
+
+    Returns:
+        - map.html: folium map that shows bus stops and the amenities around it
+
+    Notes:
+        - folium icon list: https://fontawesome.com/v4/icons/
     '''
     amenities_of_interest = {
         # food
@@ -192,10 +217,22 @@ def POI_getter(amenities, possible_locations):
     return poi_df
 
 
-def transit_duration(origin, destination, location_df):
+def transit_duration(origin, destination, stop_times_df):
+    '''
+    Helper function to caluclate the duration of the bus journey
+
+    Arguments:
+        - origin: bus stop name of the origin bus stop
+        - destination: bus stop name of the destination bus stop
+        - stop_times_df: dataframe of stops_times.txt from GTFS data
+
+    Returns:
+        - time_diff_mins: rounded up number of time difference
+    '''
+
     # get the bus timings
-    get_on = location_df[location_df['stop_name'] == origin]['departure_time'].values[0]
-    get_off = location_df[location_df['stop_name'] == destination]['departure_time'].values[0]
+    get_on = stop_times_df[stop_times_df['stop_name'] == origin]['departure_time'].values[0]
+    get_off = stop_times_df[stop_times_df['stop_name'] == destination]['departure_time'].values[0]
 
     # calculate the time difference
     start_time = datetime.strptime(get_on, '%H:%M:%S')
@@ -206,6 +243,23 @@ def transit_duration(origin, destination, location_df):
     return time_diff_mins
 
 def map_maker(origin_stop, lat,lon,all_busstops, poi_df, stop_times_df):
+    '''
+    Helper function to create the folium make, deletes current map made and re makes it with new data
+    map will automatically be zoomed into the users location
+
+    Arguments:
+        - origin_stop: bus stop name of the origin bus stop
+        - lat: current latitude of the user 
+        - lon: current longitude of the user
+        - all_busstops: all bus stops that user can get to given that bus number
+        - poi_df: dataframe of POIs retrieved from OSMNX
+        - stop_times_df: dataframe of stops_times.txt from GTFS data
+
+    Returns:
+        - map.html: folium map that is zoomed in
+    '''
+
+
     # delete html file
     map_html_path = 'templates/map.html'
     
