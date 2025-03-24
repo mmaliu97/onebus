@@ -73,6 +73,7 @@ def bus_n_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_lon
     # Extract unique bus stops with their coordinates and bus numbers
     unique_stops_routes = merged_df[['route_id', 'stop_name', 'stop_lat', 'stop_lon']].drop_duplicates()
     unique_stops = unique_stops_routes[[ 'stop_name', 'stop_lat', 'stop_lon']].drop_duplicates()
+
     # Define your specific location coordinates (latitude and longitude)
 
     # Calculate distances using Haversine formula
@@ -99,6 +100,7 @@ def bus_n_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_lon
     bus_n_stops = bus_n_stops.sort_values(by='route_id')
     bus_n_stops['distance'] = (np.ceil(bus_n_stops['distance']*100 ) * 10).astype(int)
     bus_n_stops = bus_n_stops.rename(columns={'distance': 'distance (m)', 'route_id': 'Bus Number', 'stop_name': 'Bus Stop'})
+    
     return bus_n_stops
 
 def real_bus_origin(time, df, origin):
@@ -186,7 +188,6 @@ def POI_getter(amenities, possible_locations):
     # Define amenities of interest
     amenities = list(amenities_of_interest.keys())
     amenity_tags = {'amenity': amenities}
-    building_tags = {"building": "train_station"}
 
 
     # Create an empty DataFrame to store POIs
