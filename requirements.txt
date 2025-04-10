@@ -11,6 +11,7 @@ fiona==1.9.6
 Flask==3.0.2
 folium==0.16.0
 geopandas==0.14.3
+google-cloud-storage==2.10.0
 gunicorn==21.2.0
 idna==3.6
 importlib_metadata==7.1.0
@@ -24,6 +25,7 @@ packaging==24.0
 pandas==2.2.1
 pyproj==3.6.1
 python-dateutil==2.9.0.post0
+python-dotenv==1.0.0
 pytz==2024.1
 requests==2.31.0
 shapely==2.0.3

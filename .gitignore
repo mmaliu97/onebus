@@ -1,0 +1,14 @@
+# Secrets
+/secrets/
+.env
+*.json
+*.key
+*.pem
+
+# Environment files
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
