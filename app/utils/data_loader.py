@@ -36,9 +36,9 @@ def read_gcs_csv(filename="filtered_pois.csv"):
     """Directly read a CSV file from GCS and return as DataFrame"""
     try:
         # Get base64 credentials from environment and decode
-        creds_b64 = os.getenv("GOOGLE_CREDENTIALS_BASE64")
+        creds_b64 = os.getenv("GOOGLE_CREDS_BASE64")
         if not creds_b64:
-            raise ValueError("GOOGLE_CREDENTIALS_BASE64 environment variable not set")
+            raise ValueError("GOOGLE_CREDS_BASE64 environment variable not set")
             
         creds_json = base64.b64decode(creds_b64).decode("utf-8")
         creds_dict = json.loads(creds_json)
