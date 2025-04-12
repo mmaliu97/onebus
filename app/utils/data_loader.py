@@ -43,6 +43,7 @@ def read_gcs_csv(filename="filtered_pois.csv"):
         creds_json = base64.b64decode(creds_b64).decode("utf-8")
         creds_dict = json.loads(creds_json)
         
+        print("Initializing Client")
         # Initialize client with the decoded credentials
         storage_client = storage.Client.from_service_account_info(creds_dict)
         
