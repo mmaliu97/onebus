@@ -28,7 +28,7 @@ def index():
         try:
             user_input = int(user_input)  # Try to convert input to a float
             result, stops_times_location_df = bus_stops_finder(user_input, trips_df, stops_df,stop_times_df)
-
+            print(result)
             # Store the result in a session variable
             session['bus_stops'] = result
             session['bus'] = user_input
