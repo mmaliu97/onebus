@@ -58,7 +58,6 @@ pytz==2025.2
 pyzmq==26.3.0
 requests==2.32.3
 rsa==4.9
-serverless-http==3.0.0
 setuptools==75.8.0
 shapely==2.1.0
 six==1.17.0
