@@ -2,56 +2,53 @@
 <html>
 <head>
     <title>One Bus</title>
-
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/loading.css') }}">
-    
 </head>
 <body>
-    <div class = "container">
-    <h1>Select a Bus Stop</h1>
-    <form method="POST">
-        <label for="bus_stop_selection">Bus stop:</label>
-        <select name="bus_stop" id="bus_stops-dropdown">
-            {% for bus_stop in result %}
-                <option value="{{ bus_stop }}">{{ bus_stop }}</option>
-            {% endfor %}
-        </select>
-        <label for="time">Dep Time:</label>
-        <input type="time" id="time" name="time" value="12:00">
-        <br>
-        <div id="submission">
-            <img src = "static/yuB.gif"> 
-        </div>
-        <div class="bus-container">
-            <!-- Display the HTML table -->
-            {% if table %}
-                {{ table | safe }}
-            {% else %}
-                <p>No data available.</p>
-            {% endif %}
-        </div>
-        <input class="my-button" type="submit" value="Submit" onclick="loader()">
-    </form>
-    <a href="/bus_info" ><button class="my-button">Back</button></a>
+    <div class="container">
+        <h1>Select a Bus Stop</h1>
+        <form method="POST">
+            <label for="bus_stop_selection">Bus stop:</label>
+            <select name="bus_stop" id="bus_stops-dropdown">
+                {% for bus_stop in result %}
+                    <option value="{{ bus_stop }}">{{ bus_stop }}</option>
+                {% endfor %}
+            </select>
+            <label for="time">Dep Time:</label>
+            <input type="time" id="time" name="time" value="12:00">
+            <br>
+            <div id="submission">
+                <img src="static/yuB.gif"> 
+            </div>
+            <div class="bus-container">
+                {% if table %}
+                    {{ table | safe }}
+                {% else %}
+                    <p>No data available.</p>
+                {% endif %}
+            </div>
+            <input class="my-button" type="submit" value="Submit" onclick="loader()">
+        </form>
+        <a href="/bus_info"><button class="my-button">Back</button></a>
+    </div>
 
-</div>
+    <!-- Load jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Updated search functionality -->
     <script>
         $(document).ready(function () {
-            $('#fruit-search').on('input', function () {
+            $('#bus-stop-search').on('input', function () {
                 var searchText = $(this).val().toLowerCase();
-                $('#fruit-dropdown option').each(function () {
-                    if ($(this).text().toLowerCase().indexOf(searchText) === -1) {
-                        $(this).hide();
-                    } else {
-                        $(this).show();
-                    }
+                $('#bus_stops-dropdown option').each(function () {
+                    $(this).toggle($(this).text().toLowerCase().includes(searchText));
                 });
             });
         });
-        
     </script>
+
     <script type="text/javascript">
-        function loader(){
+        function loader() {
             document.getElementById("submission").style.display = "block";  
         }
     </script>

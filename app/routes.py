@@ -3,16 +3,17 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from io import StringIO
 import pandas as pd
-from .models.bus_models import bus_stops_finder, real_bus_origin, bus_n_stops_finder
+from .models.bus_models import bus_stops_finder, real_bus_origin, three_stops_finder
 from .models.poi_models import POI_getter
 from .utils.mapping import map_maker
-import jsonify
+from flask import jsonify
 import os
+from functools import cache
+from flask import current_app
 
 main_bp = Blueprint('main', __name__)
 
-from functools import cache
-from flask import current_app
+
 
 
 @main_bp.route("/", methods=["GET", "POST"])
@@ -56,8 +57,8 @@ def stops_no_help():
     # Retrieve the result from the session variable
     result = session.get('bus_stops', [])
     bus = session.get('bus', [])
-    df_json = session.get('my_dataframe')
-    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
+    three_stops_df_json = session.get('three_stops_df')
+    df = pd.read_json(StringIO(three_stops_df_json)) if three_stops_df_json else pd.DataFrame()
     if request.method == "POST":
         # get the user selection for bus stop
         
@@ -94,15 +95,17 @@ def stops():
     stop_times_df = current_app.config['stop_times_df']
     filtered_poi_df = current_app.config['filtered_poi_df']
     
-    print(filtered_poi_df)
     
     # Retrieve the result from the session variable
     result = session.get('bus_stops', [])
     bus = session.get('bus', [])
     
-    df_json = session.get('my_dataframe')
-    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
+    three_stops_df_json = session.get('three_stops_df')
+    three_stops_df = pd.read_json(StringIO(three_stops_df_json)) if three_stops_df_json else pd.DataFrame()
 
+    user_selected_stop_df = three_stops_df[three_stops_df['Bus Number'] == int(session.get('bus', []))]
+
+    
     if request.method == "POST":
         # get the user selection for bus stop
         
@@ -127,7 +130,7 @@ def stops():
         return redirect(url_for('main.poi'))
         # except ValueError:
         #     error_message = "Input is not a valid number."
-    return render_template("stops.html", result=result, table=df.to_html(classes='table table-striped table-bordered'))
+    return render_template("stops.html", result=result, table=user_selected_stop_df.to_html(classes='table table-striped table-bordered'))
 
 # @main_bp.route('/prompt_location')
 # def prompt_location():
@@ -145,12 +148,12 @@ def get_data():
         lon = float(data['longitude'])
 
         # Call your Python function with lat and lon
-        result_df = bus_n_stops_finder(stop_times_df, trips_df,stops_df, lat, lon)
-
+        three_stops_df = three_stops_finder(stop_times_df, trips_df,stops_df, lat, lon)
+        print(three_stops_df)
         # Convert DataFrame to HTML table
-        table_html = result_df.to_html(classes='table table-striped table-bordered')
+        table_html = three_stops_df.to_html(classes='table table-striped table-bordered')
         # Store DataFrame in session
-        session['my_dataframe'] = result_df.to_json()
+        session['three_stops_df'] = three_stops_df.to_json()
         # Render the HTML template with the DataFrame table
         return render_template('bus_info.html', table_html=table_html)
     
@@ -162,11 +165,11 @@ def bus_info():
     stops_df = current_app.config['stops_df']
     trips_df = current_app.config['trips_df']
     stop_times_df = current_app.config['stop_times_df']
-    df_json = session.get('my_dataframe')
+    three_stops_df_json = session.get('three_stops_df')
 
-    # df = pd.read_json(df_json) if df_json else pd.DataFrame()
-    df = pd.read_json(StringIO(df_json)) if df_json else pd.DataFrame()
-
+    # df = pd.read_json(three_stops_df_json) if three_stops_df_json else pd.DataFrame()
+    three_stops_df = pd.read_json(StringIO(three_stops_df_json)) if three_stops_df_json else pd.DataFrame()
+    
     result=[]
     if request.method == "POST":
         user_input = ""
@@ -179,13 +182,14 @@ def bus_info():
             session['bus_stops'] = result
             session['bus'] = user_input
 
+
             # Redirect to stops page - no need to pass parameters
             return redirect(url_for('main.stops'))  # Just reference the endpoint
 
         except ValueError:
             error_message = "Input is not a valid number."
 
-    return render_template('bus_info.html', table=df.to_html(classes='table table-striped table-bordered'))
+    return render_template('bus_info.html', table=three_stops_df.to_html(classes='table table-striped table-bordered'))
 
 @main_bp.route("/poi")
 def poi():

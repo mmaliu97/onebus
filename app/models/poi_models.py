@@ -36,7 +36,14 @@ def POI_getter(filtered_pois_df, possible_locations):
     '''
     
     # Step 1: Add a geometry column to the bus stop DataFrame
-    possible_locations['geometry'] = possible_locations.apply(lambda row: Point(row['stop_lon'], row['stop_lat']), axis=1)
+    possible_locations = possible_locations.copy()
+    possible_locations.loc[:, 'geometry'] = possible_locations.apply(
+        lambda row: Point(row['stop_lon'], row['stop_lat']),
+        axis=1
+    )    
+    
+    # First ensure the geometry column is string type
+    filtered_pois_df['geometry'] = filtered_pois_df['geometry'].astype(str)
 
     # Step 2: Convert both DataFrames to GeoDataFrames
     # Set the CRS to WGS84 (EPSG:4326) for latitude/longitude

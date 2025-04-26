@@ -12,7 +12,10 @@ async function getUserLocation() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ latitude, longitude }),
+            body: JSON.stringify({ 
+                latitude: latitude,  // consistent key names
+                longitude: longitude 
+            }),
         });
 
         console.log('Location sent successfully');
@@ -34,7 +37,10 @@ async function getUserLocation() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ latitude, longitude }),
+                body: JSON.stringify({ 
+                    latitude: latitude,  // consistent key names
+                    longitude: longitude 
+                }),
             });
 
             console.log('Location sent successfully');

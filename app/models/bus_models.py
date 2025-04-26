@@ -39,7 +39,7 @@ def bus_stops_finder(bus_number, trips_df, stops_df,stop_times_df ):
 
     # merge into one dataframe so we can get the bus locations and bus timings
     selected_stops_times_location = selected_stop_times.merge(stops_df[['stop_name', 'stop_lat', 'stop_lon','stop_id']], on='stop_id', how='inner')
-
+    
     # get unique stops to display for user
     unique_stops = selected_stops_times_location['stop_name'].unique()
 
@@ -48,7 +48,7 @@ def bus_stops_finder(bus_number, trips_df, stops_df,stop_times_df ):
     return unique_stops, selected_stops_times_location
 
 
-def bus_n_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_longitude):
+def three_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_longitude):
     '''
     Find the closest 3 bus stops and their corresponding bus numbers (note a bus stop can have more than 1 bus going through it!)
 
