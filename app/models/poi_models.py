@@ -11,6 +11,7 @@ import os
 import geopandas as gpd
 from shapely import wkt
 from ..utils.formulas import haversine
+
 # Define a function to convert each polygon to its centroid point
 def get_centroid(geom):
     return Point(geom.centroid)
