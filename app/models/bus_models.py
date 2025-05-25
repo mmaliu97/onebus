@@ -103,50 +103,53 @@ def three_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_lon
     
     return bus_n_stops
 
-def real_bus_origin(time, df, origin):
+def real_bus_origin(selected_stops_times_location, bus_origins):
     '''
     Because the bus origin might change depending on the time the user departs, it is important to choose the user's bus
     stop correctly
 
     inputs:
-    time: user inputs what time they wish to leave home
-    df: this dataframe contains all the stop times and locations of the bus that the user selected
-    user_origin: where the user intends to start from. user selected this on the stops.html page
+    selected_stops_times_location: this dataframe contains all the stop times and locations of the bus that the user selected
+    bus_origins: all possible bus stop origins 
     
     output: time appropriate bus stop
     '''
     
-    time = str(time)
+    time = '08:00' # default time to be 8am
     str_time = time + ':00'
+    
+    possible_locations = []
+    
+    for bus_origin in bus_origins:
 
-    origin_sequence = df[df['stop_name'] == origin ]
-    last_sequence = max(df['stop_sequence'])
-    min_time = timedelta(seconds=86400)
+        origin_sequence = selected_stops_times_location[selected_stops_times_location['stop_name'] == bus_origin ]
+        last_sequence = max(selected_stops_times_location['stop_sequence'])
+        min_time = timedelta(seconds=86400)
 
-    for index_origin, row_origin in origin_sequence.iterrows():
-        min_sequence = row_origin['stop_sequence']
-        if min_sequence <= last_sequence:
+        for index_origin, row_origin in origin_sequence.iterrows():
+            min_sequence = row_origin['stop_sequence']
+            if min_sequence <= last_sequence:
 
-            # reset the first sequence  
-            last_sequence = min_sequence
+                # reset the first sequence  
+                last_sequence = min_sequence
 
-            # calculate the time difference
-            start_time = datetime.strptime(row_origin['arrival_time'], '%H:%M:%S')
-            user_time = datetime.strptime(str_time, '%H:%M:%S')
-            time_diff = user_time - start_time
-            # if the time difference between start of bus line and user time is positive, choose that bus line 
-            if time_diff > timedelta(seconds=0):
-                time_diff = min_time
-                real_origin = row_origin
-            else:
-                real_origin = row_origin
+                # calculate the time difference
+                start_time = datetime.strptime(row_origin['arrival_time'], '%H:%M:%S')
+                user_time = datetime.strptime(str_time, '%H:%M:%S')
+                time_diff = user_time - start_time
+                # if the time difference between start of bus line and user time is positive, choose that bus line 
+                if time_diff > timedelta(seconds=0):
+                    time_diff = min_time
+                    real_origin = row_origin
+                else:
+                    real_origin = row_origin
 
-    # get the trip ID and and which order is it in the list of bus stops
-    selected_trip_id= real_origin['trip_id']
-    selected_stop_seq = real_origin['stop_sequence']
+        # get the trip ID and and which order is it in the list of bus stops
+        selected_trip_id= real_origin['trip_id']
+        selected_stop_seq = real_origin['stop_sequence']
 
-    # find all possible bus stops the user can go to and (selected_stops_times_location['trip_id'] == selected_trip_id)
-    possible_locations = df[(df['stop_sequence'] >= selected_stop_seq) & (df['trip_id'] == selected_trip_id)]
+        # find all possible bus stops the user can go to and (selected_stops_times_location['trip_id'] == selected_trip_id)
+        possible_locations = possible_locations.append(selected_stops_times_location[(selected_stops_times_location['stop_sequence'] >= selected_stop_seq) & (selected_stops_times_location['trip_id'] == selected_trip_id)])
 
     return possible_locations
 

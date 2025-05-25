@@ -70,7 +70,7 @@ def stops_no_help():
         result, stops_times_locations_df = bus_stops_finder(bus, trips_df, stops_df,stop_times_df)
         
         session['bus_stop'] = bus_stop
-        all_busstops = real_bus_origin(time,stops_times_locations_df,bus_stop)
+        all_busstops = real_bus_origin(stops_times_locations_df,bus_stop)
         amenities = ['restaurant', 'cafe', 'park','cinema','music_venue',
                 'social_centre','theatre','marketplace']
 
