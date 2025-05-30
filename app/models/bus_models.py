@@ -48,37 +48,22 @@ def bus_stops_finder(bus_number, trips_df, stops_df,stop_times_df ):
     return unique_stops, selected_stops_times_location
 
 
-def three_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_longitude):
+def three_stops_finder(all_unique_stops, user_latitude, user_longitude):
     '''
     Find the closest 3 bus stops and their corresponding bus numbers (note a bus stop can have more than 1 bus going through it!)
 
     Arguments: 
-    stop_times_df: dataframe of stops_times.txt from GTFS data
-    trips_df: dataframe of trips.txt from GTFS data
-    stops_df: dataframe of stops.txt from GTFS data
+    all_unique_stops: all unique routes from the GTFS data
     user_latitude: get this by prompting for user's location from the front end
     user_longitude: get this by prompting for user's location from the front end
 
     Returns:
-    dataframe of the
-        - bus stops
-        - their corresponding number bus number
-        - and the distance between their location and the bus stop
+    origin_stops: Dataframe of the 3 closest bus stops and all corresponding bus stops 
     '''
-
-    # Merge relevant data
-    merged_df = pd.merge(stop_times_df, trips_df, on='trip_id')
-    merged_df = pd.merge(merged_df, stops_df, on='stop_id')
-
-    # Extract unique bus stops with their coordinates and bus numbers
-    unique_stops_routes = merged_df[['route_id', 'stop_name', 'stop_lat', 'stop_lon']].drop_duplicates()
-    unique_stops = unique_stops_routes[[ 'stop_name', 'stop_lat', 'stop_lon']].drop_duplicates()
-
-    # Define your specific location coordinates (latitude and longitude)
 
     # Calculate distances using Haversine formula
     def haversine(lat1, lon1, lat2, lon2):
-        R = 6371  # Radius of the Earth in kilometers
+        R = 6371  # Radius of the E arth in kilometers
         dlat = radians(lat2 - lat1)
         dlon = radians(lon2 - lon1)
         a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
@@ -87,21 +72,59 @@ def three_stops_finder(stop_times_df, trips_df,stops_df, user_latitude, user_lon
         return distance
 
     # Calculate distances for each bus stop
-    unique_stops['distance'] = unique_stops.apply(lambda row: haversine(user_latitude, user_longitude, row['stop_lat'], row['stop_lon']), axis=1)
+    all_unique_stops['distance'] = all_unique_stops.apply(lambda row: haversine(user_latitude, user_longitude, row['stop_lat'], row['stop_lon']), axis=1)
 
     # Sort bus stops by distance and get the closest stops
-    closest_stops = unique_stops.nsmallest(3, 'distance')[[ 'stop_name', 'stop_lat', 'stop_lon', 'distance']]
+    closest_stops = all_unique_stops.nsmallest(3, 'distance')[[ 'stop_name', 'stop_lat', 'stop_lon', 'distance']]
 
-    # Print or use the closest bus stops
-    top3_stops = closest_stops['stop_name']
+    # Sort by distance (ascending) to prioritize closer stops
+    sorted_stops = all_unique_stops.sort_values('distance')
 
-    bus_n_stops = unique_stops_routes[unique_stops_routes['stop_name'].isin(top3_stops)].merge(closest_stops, how = "left", on='stop_name')[['route_id','stop_name','distance']]
+    # Drop duplicates, keeping the first (closest) occurrence of each stop_name
+    unique_sorted_stops = sorted_stops.drop_duplicates(subset=['stop_name'], keep='first')
 
-    bus_n_stops = bus_n_stops.sort_values(by='route_id')
-    bus_n_stops['distance'] = (np.ceil(bus_n_stops['distance']*100 ) * 10).astype(int)
-    bus_n_stops = bus_n_stops.rename(columns={'distance': 'distance (m)', 'route_id': 'Bus Number', 'stop_name': 'Bus Stop'})
+    # Take the top 3 closest unique stops
+    closest_stops = unique_sorted_stops.head(3)[['stop_name', 'stop_lat', 'stop_lon', 'distance']]
+
+    # select the 3 closest bus stops
+    origin_stops = all_unique_stops[all_unique_stops['stop_name'].isin(closest_stops['stop_name'])]
+
+    origin_stops = origin_stops.sort_values(by='route_id')
+    origin_stops['distance'] = (np.ceil(origin_stops['distance']*100 ) * 10).astype(int)
+    origin_stops = origin_stops.rename(columns={'distance': 'distance (m)'})
+
+    # tag the closest stops to be origin stops
+    origin_stops['origin stop'] = True 
     
-    return bus_n_stops
+    return origin_stops
+
+def all_stop_finder(origin_stops, all_unique_stops):
+    '''
+    Find the closest 3 bus stops and their corresponding bus numbers (note a bus stop can have more than 1 bus going through it!)
+
+    Arguments: 
+    all_unique_stops: all unique routes from the GTFS data
+    origin_stops: The 3 origin bus stops near the user
+
+    Returns:
+    all_possible_stops: Dataframe of all possible stops that the user can go to based off the 3 bus stops
+    '''
+    # initialize subsequent stops dataframe
+    subsequent_stops = pd.DataFrame()
+
+    for index,row in origin_stops.iterrows():
+        # take the stop name and the stop sequence in order to find out which are the subsequent stops
+        current_sequence = row['stop_sequence']
+        headsign = row['trip_headsign']
+        subsequent_stops_add = all_unique_stops[(all_unique_stops['stop_sequence'] > current_sequence) & (all_unique_stops['trip_headsign'] == headsign)]
+        
+        subsequent_stops = pd.concat([subsequent_stops,subsequent_stops_add])
+        
+    subsequent_stops['origin stop'] = False
+    
+    all_possible_stops = pd.concat([origin_stops,subsequent_stops])
+    
+    return all_possible_stops
 
 def real_bus_origin(selected_stops_times_location, bus_origins):
     '''
