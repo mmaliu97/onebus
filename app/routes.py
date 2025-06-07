@@ -138,15 +138,31 @@ def stops():
 
 @main_bp.route('/get_data', methods=["GET",'POST'])
 def get_data():
+    
+    '''
+    Using users lat lon, get the 3 closest bus stops and all possible stops that the user can go to from their current location
+    
+    Arguments:
+    - all unique stops 
+    - lat,lon
+    
+    Returns:
+    - all possible stops
+    '''
     stops_df = current_app.config['stops_df']
     trips_df = current_app.config['trips_df']
     stop_times_df = current_app.config['stop_times_df']
+    
+    ### load all unique stops dataframe
+    
     try:
         # Get latitude and longitude from the request
         data = request.get_json()
         lat = float(data['latitude'])
         lon = float(data['longitude'])
 
+        
+        
         # Call your Python function with lat and lon
         three_stops_df = three_stops_finder(stop_times_df, trips_df,stops_df, lat, lon)
         print(three_stops_df)

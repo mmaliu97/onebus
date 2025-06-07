@@ -13,27 +13,24 @@ def create_app():
     trips_df = read_gcs_csv('e_trips.csv')
     stop_times_df = read_gcs_csv('stop_times.csv')
     filtered_poi_df = read_gcs_csv('filtered_pois.csv')
+    all_unique_stops_df = read_gcs_csv('all_unique_stops.csv')
     
     # Declaring data types
-    stops_df = stops_df.astype({
-    'stop_id': 'string',          # Changed from int64 to string (categorical ID)
-    'at_street': 'string',        # Changed from object to string
-    'corner_placement': 'string', # Changed from object to string
-    'heading': 'int16',           # Reduced from int64 (if values are small)
-    'location_type': 'int8',      # Reduced from int64 (small categorical)
-    'on_street': 'string',        # Changed from object to string
-    'parent_station': 'string',   # Changed from float64 to string (categorical)
-    'stop_code': 'string',        # Changed from int64 to string (identifier)
-    'stop_desc': 'string',        # Changed from object to string
-    'stop_lat': 'float32',        # Reduced from float64
-    'stop_lon': 'float32',        # Reduced from float64
-    'stop_name': 'string',        # Changed from object to string
-    'stop_position': 'string',    # Changed from object to string
-    'stop_timezone': 'string',    # Changed from float64 to string
-    'stop_url': 'string',         # Changed from object to string
-    'wheelchair_boarding': 'int8',# Reduced from int64 (binary/ternary value)
-    'zone_id': 'string'          # Changed from float64 to string (categorical)
-})[['stop_id','on_street','stop_code','stop_desc', 'stop_name', 'stop_lat', 'stop_lon','parent_station', 'at_street','corner_placement', 'heading','stop_position']]  # Keep only needed columns
+    all_unique_stops_df = all_unique_stops_df.astype({
+    "trip_id":                  "object",
+    "arrival_time":             "object",
+    "departure_time":           "object",
+    "stop_sequence":            "int64",
+    "trip_headsign":            "object",
+    "direction_id":             "int64",
+    "route_id":                 "int64",
+    "wheelchair_accessible":    "int64",
+    "bikes_allowed":            "int64",
+    "stop_lat":                 "float64",
+    "stop_lon":                 "float64",
+    "stop_name":                "object",
+    "is_express":               "bool"
+})
     
     trips_df = trips_df.astype({
     'route_id': 'int64',
@@ -74,6 +71,7 @@ def create_app():
     app.config['trips_df'] = trips_df
     app.config['stop_times_df'] = stop_times_df
     app.config['filtered_poi_df'] = filtered_poi_df
+    app.config['all_unique_stops_df'] = all_unique_stops_df
     
     # Register blueprints
     app.register_blueprint(main_bp)
