@@ -3,12 +3,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from io import StringIO
 import pandas as pd
-from .models.bus_models import bus_stops_finder, real_bus_origin, three_stops_finder
+from .models.bus_models import bus_stops_finder, real_bus_origin, three_stops_finder, all_stop_finder
 from .models.poi_models import POI_getter
 from .utils.mapping import map_maker
 from flask import jsonify
 import os
-from functools import cache
 from flask import current_app
 
 main_bp = Blueprint('main', __name__)
@@ -149,13 +148,12 @@ def get_data():
     Returns:
     - all possible stops
     '''
-    stops_df = current_app.config['stops_df']
-    trips_df = current_app.config['trips_df']
-    stop_times_df = current_app.config['stop_times_df']
-    
-    ### load all unique stops dataframe
-    
+
+    all_unique_stops_df = current_app.config['all_unique_stops_df']
+    filtered_poi_df = current_app.config['filtered_poi_df']
+
     try:
+        
         # Get latitude and longitude from the request
         data = request.get_json()
         lat = float(data['latitude'])
@@ -163,18 +161,21 @@ def get_data():
 
         
         
-        # Call your Python function with lat and lon
-        three_stops_df = three_stops_finder(stop_times_df, trips_df,stops_df, lat, lon)
-        print(three_stops_df)
-        # Convert DataFrame to HTML table
-        table_html = three_stops_df.to_html(classes='table table-striped table-bordered')
-        # Store DataFrame in session
-        session['three_stops_df'] = three_stops_df.to_json()
-        # Render the HTML template with the DataFrame table
-        return render_template('bus_info.html', table_html=table_html)
-    
+        # Get three closest bus stops with user location
+        three_stops_df = three_stops_finder(all_unique_stops_df, lat, lon)
+        
+        # Get all possible stops from origin stops
+        all_stops = all_stop_finder(three_stops_df, all_unique_stops_df)
+
+        # Get all possible POI from all stops
+        POI_df = POI_getter(filtered_poi_df, all_stops)
+
+        map_maker(lat,lon,all_stops, POI_df)
+
+        return redirect(url_for('poi'))
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
     
 @main_bp.route("/bus_info", methods=["GET",'POST'])
 def bus_info():

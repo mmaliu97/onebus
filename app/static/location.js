@@ -20,7 +20,7 @@ async function getUserLocation() {
 
         console.log('Location sent successfully');
 
-        window.location.href = '/bus_info'; 
+        window.location.href = '/poi'; 
     }
     else if (navigator.geolocation) {
         try {
@@ -45,7 +45,7 @@ async function getUserLocation() {
 
             console.log('Location sent successfully');
 
-            window.location.href = '/bus_info'; // Change this to the desired URL
+            window.location.href = '/poi'; // Change this to the desired URL
 
 
             // You can continue with any other processing or UI updates here
