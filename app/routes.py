@@ -9,7 +9,7 @@ from .utils.mapping import map_maker
 from flask import jsonify
 import os
 from flask import current_app
-
+import time
 main_bp = Blueprint('main', __name__)
 
 
@@ -159,8 +159,6 @@ def get_data():
         lat = float(data['latitude'])
         lon = float(data['longitude'])
 
-        
-        
         # Get three closest bus stops with user location
         three_stops_df = three_stops_finder(all_unique_stops_df, lat, lon)
         
@@ -171,6 +169,7 @@ def get_data():
         POI_df = POI_getter(filtered_poi_df, all_stops)
 
         map_maker(lat,lon,all_stops, POI_df)
+        
 
         return redirect(url_for('poi'))
     except Exception as e:
