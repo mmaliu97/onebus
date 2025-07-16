@@ -45,7 +45,7 @@ def map_maker(lat,lon,all_possible_stops, poi_df):
         stop = row['stop_name']
         headsign = row['trip_headsign']
         
-        popup_text = folium.Html(f"Bus Station: {stop} <br> heading towards {headsign}", script = True)
+        popup_text = folium.Html(f"Bus Station: {stop} heading towards {headsign}", script = True)
         
         # Add a marker for each row to the map
         folium.Marker(
@@ -62,14 +62,14 @@ def map_maker(lat,lon,all_possible_stops, poi_df):
         poi_busstop = str(row['stop_name'])
         poi_bus = row['route_id']
         poi_name = row['name']
-        first_stop_number = poi_df[poi_df['origin stop'] == True]['stop_sequence']
-        print(first_stop_number)
+        first_stop_number = poi_df[(poi_df['origin stop'] == True) & (poi_df['route_id'] == poi_bus)]['stop_sequence']
+        # print(first_stop_number)
         # num_stops = row['stop_sequence'] - row['first_stop_number']
         poi_amenity = row['amenity']
         icon_name = row['icon']
         icon_color = row['color']
         
-        popup_text = folium.Html(f"Take bus {poi_bus} <br> Closest bus stop: {poi_busstop}.<br>Name of POI: {poi_name}.<br>Type of POI: {poi_amenity}.", script = True)
+        popup_text = folium.Html(f"Take bus {poi_bus} for stops <br> Closest bus stop: {poi_busstop}.<br>Name of POI: {poi_name}.<br>Type of POI: {poi_amenity}.<br>.", script = True)
 
         # Add a marker for each row to the map
         folium.Marker(

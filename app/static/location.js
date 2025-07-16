@@ -3,8 +3,6 @@ document.getElementById('getLocationBtn').addEventListener('click', getUserLocat
 async function getUserLocation() {
     console.log(isAustin)
     if (!isAustin) {
-        latitude = 30.36869800593312;
-        longitude = -97.72022131963884;
 
         // Send an asynchronous request to Flask server without expecting a JSON response
         await fetch('/get_data', {
