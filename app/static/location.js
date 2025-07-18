@@ -1,26 +1,7 @@
 document.getElementById('getLocationBtn').addEventListener('click', getUserLocation);
 
 async function getUserLocation() {
-    console.log(isAustin)
-    if (!isAustin) {
-
-        // Send an asynchronous request to Flask server without expecting a JSON response
-        await fetch('/get_data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                latitude: latitude,  // consistent key names
-                longitude: longitude 
-            }),
-        });
-
-        console.log('Location sent successfully');
-
-        window.location.href = '/poi'; 
-    }
-    else if (navigator.geolocation) {
+    if (navigator.geolocation) {
         try {
             const position = await getPosition();
             const latitude = position.coords.latitude;
@@ -29,24 +10,21 @@ async function getUserLocation() {
             console.log('Latitude:', latitude);
             console.log('Longitude:', longitude);
 
-            // Send an asynchronous request to Flask server without expecting a JSON response
+            // Send an asynchronous request to Flask server
             await fetch('/get_data', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    latitude: latitude,  // consistent key names
+                    latitude: latitude,
                     longitude: longitude 
                 }),
             });
 
             console.log('Location sent successfully');
+            window.location.href = '/poi';
 
-            window.location.href = '/poi'; // Change this to the desired URL
-
-
-            // You can continue with any other processing or UI updates here
         } catch (error) {
             console.error('Error getting location:', error);
         }
