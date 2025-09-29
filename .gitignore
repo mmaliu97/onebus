@@ -16,6 +16,5 @@ __pycache__/
 # Ignore specific files inside templates/
 templates/bus_info.html
 templates/loading.html
-templates/stops_no_help.html
-templates/stops_no_help.html
+
 templates/stops.html
